@@ -588,6 +588,53 @@ def relatorio_deteccoes_ia(talhao_id, apenas_nao_resolvidas=False):
     conn.close()
     return [dict(r) for r in rows]
 
+def resumo_dashboard():
+    conn, cursor = conectar()
+
+    # Total de análises
+    cursor.execute("SELECT COUNT(*) AS total FROM verificacoes")
+    total_analises = cursor.fetchone()["total"]
+
+    # Saudáveis
+    cursor.execute("""
+        SELECT COUNT(*) AS total
+        FROM verificacoes
+        WHERE resultado = 'saudavel'
+    """)
+    saudaveis = cursor.fetchone()["total"]
+
+    # Pragas detectadas
+    cursor.execute("""
+        SELECT COUNT(*) AS total
+        FROM verificacoes
+        WHERE resultado = 'patologia_detectada'
+    """)
+    pragas_detectadas = cursor.fetchone()["total"]
+
+    # Praga mais frequente
+    cursor.execute("""
+        SELECT p.nome, COUNT(*) AS total
+        FROM deteccoes d
+        JOIN patologias p ON p.id = d.patologia_id
+        GROUP BY p.id
+        ORDER BY total DESC
+        LIMIT 1
+    """)
+
+    row = cursor.fetchone()
+
+    praga_mais_comum = row["nome"] if row else None
+    ocorrencias = row["total"] if row else 0
+
+    conn.close()
+
+    return {
+        "total_analises": total_analises,
+        "saudaveis": saudaveis,
+        "praga_detectada": pragas_detectadas,
+        "praga_mais_comum": praga_mais_comum,
+        "ocorrencias_de_praga_mais_comum": ocorrencias
+    }
 
 # ──────────────────────────────────────────────
 # INTEGRAÇÃO COM IA
