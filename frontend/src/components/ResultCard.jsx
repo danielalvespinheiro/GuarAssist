@@ -1,6 +1,9 @@
 // src/components/ResultCard.jsx
 
 export default function ResultCard({ result }) {
+
+  if (!result) return <div className="result-card loading"></div>
+  
   const isHealthy = result.status === "saudavel"
   const confidence = Math.round(result.confidence * 100)
 

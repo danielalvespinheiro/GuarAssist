@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react"
 import Webcam from "react-webcam"
 import { analyzeImage } from "./services/api"
-import ResultCard from "./components/ResultCard"
+import ResultScreen from "./components/ResultScreen"
 import HistoryPanel from "./components/HistoryPanel"
 import "./App.css"
 
@@ -171,7 +171,7 @@ export default function App() {
           )}
 
           {error && <div className="error-msg">⚠️ {error}</div>}
-          {result && <ResultCard result={result} onReset={reset} />}
+          {result && <ResultScreen result={result} onNewAnalysis={reset} />}
         </div>
       )}
 
