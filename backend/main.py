@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.analyze import router as analyze_router
 from routes.history import router as history_router
+from routes.stats import router as stats_router
 from database.database import init_db
 from contextlib import asynccontextmanager
 
@@ -27,9 +28,10 @@ async def lifespan(app: FastAPI):
     print("Encerrando servidor...")
 
 # escrevas essas rotas da seguinte forma>
-#
+# /api/analyze (Exemplo prático)
 app.include_router(analyze_router, prefix="/api")
 app.include_router(history_router, prefix="/api")
+app.include_router(stats_router, prefix="/api")
 
 @app.get("/")
 def root():
