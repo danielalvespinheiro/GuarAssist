@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Node / Frontend
+node_modules/
+dist/
+
+# Banco de dados SQLite
+*.db
+*.sqlite
